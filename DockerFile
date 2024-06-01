@@ -11,8 +11,8 @@ RUN mkdir -p /etc/mongod \
     && chmod -R 700 /etc/mongod
 
 # Update Ubuntu base Image
-RUN apt-get -y update
-RUN apt-get -y upgrade
+# RUN apt-get -y update
+# RUN apt-get -y upgrade
 
 # Copy MongoDB configuration file to the container
 COPY mongod.conf /etc/mongod/mongod.conf
