@@ -1,5 +1,5 @@
 # Use the official MongoDB image as the base image (Ubuntu)
-FROM mongo:8.0.0-rc6-jammy
+FROM mongo:latest
 
 # Set environment variables to enhance security (Default Credentials just for validation)
 ENV MONGO_INITDB_ROOT_USERNAME=admin
