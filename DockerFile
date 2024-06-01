@@ -18,7 +18,7 @@ RUN set -eux; \
 	apt-get update; \
 	apt-get install -y gosu; \
 	rm -rf /var/lib/apt/lists/*; \
-    rm -rf /usr/local/bin/gosu
+    rm -rf /usr/local/bin/gosu/*; \
 # verify that the binary works
 	gosu nobody true
 
