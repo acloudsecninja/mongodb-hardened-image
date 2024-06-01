@@ -1,15 +1,18 @@
-# Use the official MongoDB image as the base image
-FROM mongo:latest
+# Use the official MongoDB image as the base image (Ubuntu)
+FROM mongo:8.0.0-rc6-jammy
 
-# Set environment variables to enhance security
+# Set environment variables to enhance security (Default Credentials just for validation)
 ENV MONGO_INITDB_ROOT_USERNAME=admin
 ENV MONGO_INITDB_ROOT_PASSWORD=strongPassword123
 
-# CIS Benchmark Recommendations
+# CIS Benchmark Recommendations for default configuration
 RUN mkdir -p /etc/mongod \
     && chown -R mongodb:mongodb /etc/mongod \
     && chmod -R 700 /etc/mongod
 
+# Update Ubuntu base Image
+RUN apt-get -y update
+RUN apt-get -y upgrade
 # Copy MongoDB configuration file to the container
 COPY mongod.conf /etc/mongod/mongod.conf
 
@@ -17,4 +20,5 @@ COPY mongod.conf /etc/mongod/mongod.conf
 EXPOSE 27017
 
 # Start MongoDB service
+
 CMD ["mongod", "--config", "/etc/mongod/mongod.conf"]
