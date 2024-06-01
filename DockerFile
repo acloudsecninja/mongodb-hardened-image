@@ -1,0 +1,20 @@
+# Use the official MongoDB image as the base image
+FROM mongo:latest
+
+# Set environment variables to enhance security
+ENV MONGO_INITDB_ROOT_USERNAME=admin
+ENV MONGO_INITDB_ROOT_PASSWORD=strongPassword123
+
+# CIS Benchmark Recommendations
+RUN mkdir -p /etc/mongod \
+    && chown -R mongodb:mongodb /etc/mongod \
+    && chmod -R 700 /etc/mongod
+
+# Copy MongoDB configuration file to the container
+COPY mongod.conf /etc/mongod/mongod.conf
+
+# Expose MongoDB default port
+EXPOSE 27017
+
+# Start MongoDB service
+CMD ["mongod", "--config", "/etc/mongod/mongod.conf"]
