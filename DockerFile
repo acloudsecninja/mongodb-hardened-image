@@ -14,6 +14,13 @@ RUN mkdir -p /etc/mongod \
 RUN apt-get -y update
 RUN apt-get -y upgrade
 
+RUN set -eux; \
+	apt-get update; \
+	apt-get install -y gosu; \
+	rm -rf /var/lib/apt/lists/*; \
+# verify that the binary works
+	gosu nobody true
+
 # Copy MongoDB configuration file to the container
 COPY mongod.conf /etc/mongod/mongod.conf
 
