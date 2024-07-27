@@ -22,6 +22,9 @@ RUN set -eux; \
 # verify that the binary works
 	gosu nobody true
 
+
+
+
 # Copy MongoDB configuration file to the container
 COPY mongod.conf /etc/mongod/mongod.conf
 
@@ -29,5 +32,4 @@ COPY mongod.conf /etc/mongod/mongod.conf
 EXPOSE 27017
 
 # Start MongoDB service
-
 CMD ["mongod", "--config", "/etc/mongod/mongod.conf"]
