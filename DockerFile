@@ -5,10 +5,36 @@ FROM mongo:latest
 ENV MONGO_INITDB_ROOT_USERNAME=admin
 ENV MONGO_INITDB_ROOT_PASSWORD=strongPassword123
 
-# CIS Benchmark Recommendations for default configuration
+# Set the working directory
+WORKDIR /etc/mongo
+
+# Copy the MongoDB configuration file to the container
+COPY mongod.conf /etc/mongo/mongod.conf
+
+# Install OpenSSL
+RUN apt-get update && \
+    apt-get install -y openssl && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Create SSL Certficate / PEM File for Use for SSL
+RUN openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -sha256 -days 3650 -nodes -subj "/CN=Certificate Authority"
+
+
+# Copy SSL certificate and key files to the container
+RUN cp /etc/mongo/key.pem /etc/ssl/key.pem
+
+# Ensure the certificate and key files have the correct permissions
+RUN chown mongodb:mongodb /etc/mongo/key.pem && chmod 600 /etc/ssl/key.pem
+
+# Create default directory for mongod
 RUN mkdir -p /etc/mongod \
     && chown -R mongodb:mongodb /etc/mongod \
     && chmod -R 700 /etc/mongod
+
+# Install OpenSSL for certificate management
+RUN apt-get update && apt-get install -y openssl
+
 
 # Update Ubuntu base Image
 RUN apt-get -y update
